@@ -76,6 +76,16 @@ CREATE TABLE
     );
 
 CREATE TABLE
+    IF NOT EXISTS hiring_manager_coop_advisor (
+        hiring_manager_id INT NOT NULL,
+        coop_advisor_id INT NOT NULL,
+        PRIMARY KEY (hiring_manager_id, coop_advisor_id),
+        -- one-to-many
+        CONSTRAINT fk_hmca_hiring_manager FOREIGN KEY (hiring_manager_id) REFERENCES hiring_manager (id) ON UPDATE CASCADE ON DELETE CASCADE,
+        CONSTRAINT fk_hmca_coop_advisor FOREIGN KEY (coop_advisor_id) REFERENCES coop_advisor (id) ON UPDATE CASCADE ON DELETE CASCADE
+    );
+
+CREATE TABLE
     IF NOT EXISTS job_position (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
