@@ -155,3 +155,98 @@ CREATE TABLE
         CONSTRAINT fk_application_student FOREIGN KEY (applicant_id) REFERENCES student (id) ON UPDATE CASCADE ON DELETE CASCADE,
         CONSTRAINT fk_application_job_position FOREIGN KEY (job_position_id) REFERENCES job_position (id) ON UPDATE CASCADE ON DELETE CASCADE
     );
+
+-- Populating tables
+-- colleges
+INSERT INTO coop_connect.college (id, name)
+VALUES ('1', 'Northeastern');
+INSERT INTO coop_connect.college (id, name)
+VALUES ('2', 'Boston University');
+-- departments
+INSERT INTO coop_connect.department (college, name)
+VALUES ('1', 'Khoury College of Computer Science');
+INSERT INTO coop_connect.department (college, name)
+VALUES ('2', 'College of Arts, Media & Design');
+-- majors
+INSERT INTO coop_connect.major (id, name, department)
+VALUES ('1', 'Computer Science', '1');
+INSERT INTO coop_connect.major (id, name, department)
+VALUES ('2', 'Cybersecurity', '1');
+INSERT INTO coop_connect.major (id, name, department)
+VALUES ('3', 'Design', '2');
+-- co-op advisors
+INSERT INTO coop_connect.coop_advisor (id, name, email, department_id)
+VALUES ('1', 'Winston Churchill', 'w.churchill@northeastern.edu',
+        '1');
+INSERT INTO coop_connect.coop_advisor (id, name, email, department_id)
+VALUES ('2', 'Amber Jackson', 'a.jackson@northeastern.edu',
+        '2');
+-- students
+INSERT INTO coop_connect.student (id, name, email, gpa, major_id, grad_year, advised_by)
+VALUES ( 1, 'Maura Turner', 'm.turner@northeastern.edu',4.0,
+        '1', '2027', '1');
+INSERT INTO coop_connect.student (id, name, email, gpa, major_id, grad_year, advised_by)
+VALUES ( 2, 'Wade Wilson', 'w.wilson@northeastern.edu',3.0,
+        '1', '2027', '1');
+INSERT INTO coop_connect.student (id, name, email, gpa, major_id, grad_year, advised_by)
+VALUES ( 3, 'Matt Smith', 'm.smith@northeastern.edu',3.7,
+        '3', '2027', '1');
+INSERT INTO coop_connect.student (id, name, email, gpa, major_id, grad_year, advised_by)
+VALUES ( 4, 'Ann Adams', 'a.adams@northeastern.edu',2.5,
+        '3', '2026', '2');
+-- industries
+INSERT INTO coop_connect.industry (id, name)
+VALUES ('1', 'Tech');
+INSERT INTO coop_connect.industry (id, name)
+VALUES ('2', 'Pharmaceuticals');
+-- companies
+INSERT INTO coop_connect.company (id, name, industry, location, description, criteria)
+VALUES ('1', 'Microsoft', '1', 'Seattle', 'abc',
+        'abc');
+INSERT INTO coop_connect.company (id, name, industry, location, description, criteria)
+VALUES ('2', 'Apple', '1', 'Los Angeles', 'abc',
+        'abc');
+-- job positions
+INSERT INTO coop_connect.job_position (id, title, description, still_accepting,
+                                       num_applicants, location, desired_skills,
+                                       targeted_majors, company_id)
+VALUES ('1', 'Software Developer', 'abc', '1',
+        20, 'Seattle', 'teamwork',
+        'Computer Science', '1');
+INSERT INTO coop_connect.job_position (id, title, description, still_accepting,
+                                       num_applicants, location, desired_skills,
+                                       targeted_majors, company_id)
+VALUES ('2', 'UX Designer', 'abc', '1',
+        20, 'Los Angeles', 'teamwork',
+        'Biology', '2');
+-- applications
+INSERT INTO coop_connect.application
+    (id, applicant_id, job_position_id, status)
+VALUES ('1','2','2', 'Pending');
+INSERT INTO coop_connect.application
+    (id, applicant_id, job_position_id, status)
+VALUES ('2','3','2', 'Rejected');
+-- hiring managers
+INSERT INTO coop_connect.hiring_manager (id, name, position, email, company_id)
+VALUES ('1', 'Damian Wayne', '1', 'd.wayne@outlook.com',
+        '1');
+INSERT INTO coop_connect.hiring_manager (id, name, position, email, company_id)
+VALUES ('2', 'Sarah Lewis', '2', 's.lewis@gmail.com',
+        '2');
+-- interview questions
+INSERT INTO coop_connect.interview_question (id, question, job_position_id, author_id)
+VALUES ('1', 'What is your greatest strength?', '1', '1');
+INSERT INTO coop_connect.interview_question (id, question, job_position_id, author_id)
+VALUES ('2', 'What is your greatest weakness?', '2', '3');
+-- reviews
+INSERT INTO coop_connect.review (id, rating, review, student_id, job_position_id)
+VALUES ('1', '3', 'Review 1', '1', '1');
+INSERT INTO coop_connect.review (id, rating, review, student_id, job_position_id)
+VALUES ('2', '4', 'Review 2', '3', '1');
+INSERT INTO coop_connect.review (id, rating, review, student_id, job_position_id)
+VALUES ('3', '2', 'Review 3', '1', '2');
+-- skills
+INSERT INTO skill (id, name)
+VALUES (1, 'Python');
+INSERT INTO skill (id, name)
+VALUES (2, 'SQL');
