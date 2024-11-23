@@ -206,3 +206,27 @@ def update_product():
     current_app.logger.info(product_info)
 
     return "Success"
+
+# -------------------------------------------------------------
+# Route to get the 8 most frequently ordered items
+
+@products.route('/eightMostOrdered', methods=['GET'])
+def get_8_most_ordered_products():
+
+    query = '''
+        SELECT p.ProductName, s.CompanyName AS SupplierName, SUM(o.OrderID) AS TotalOrders
+        FROM Products p JOIN Suppliers s ON p.SupplierID = s. SupplierID
+            JOIN `Order Details` o ON p.ProductID = o.ProductID
+        GROUP BY p.ProductName
+        ORDER BY TotalOrders DESC, p.ProductName
+        LIMIT 8
+    '''
+
+    # Same process as above
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
