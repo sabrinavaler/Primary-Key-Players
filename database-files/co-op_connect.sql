@@ -741,4 +741,89 @@ DELETE FROM coop_connect.student
 WHERE
     student.id = 4;
 
--- insert mockaroo data here
+-- insert mockaroo data here NOT DONE YET!!!!
+-- College table data
+insert into college (id, name) values (1, 'Massachusetts Institute of Technology');
+insert into college (id, name) values (2, 'Northeastern University');
+insert into college (id, name) values (3, 'Tufts University');
+insert into college (id, name) values (4, 'Boston College');
+insert into college (id, name) values (5, 'Boston College');
+insert into college (id, name) values (6, 'Massachusetts Institute of Technology');
+insert into college (id, name) values (7, 'Massachusetts Institute of Technology');
+insert into college (id, name) values (8, 'Harvard University');
+insert into college (id, name) values (9, 'Boston College');
+insert into college (id, name) values (10, 'Boston College');
+insert into college (id, name) values (11, 'Boston College');
+insert into college (id, name) values (12, 'Northeastern University');
+insert into college (id, name) values (13, 'Harvard University');
+insert into college (id, name) values (14, 'Boston College');
+insert into college (id, name) values (15, 'Boston College');
+insert into college (id, name) values (16, 'Boston College');
+insert into college (id, name) values (17, 'Boston University');
+insert into college (id, name) values (18, 'Boston University');
+insert into college (id, name) values (19, 'Northeastern University');
+insert into college (id, name) values (20, 'Massachusetts Institute of Technology');
+insert into college (id, name) values (21, 'Tufts University');
+insert into college (id, name) values (22, 'Massachusetts Institute of Technology');
+insert into college (id, name) values (23, 'Northeastern University');
+insert into college (id, name) values (24, 'Northeastern University');
+insert into college (id, name) values (25, 'Northeastern University');
+insert into college (id, name) values (26, 'Harvard University');
+insert into college (id, name) values (27, 'Northeastern University');
+insert into college (id, name) values (28, 'Massachusetts Institute of Technology');
+insert into college (id, name) values (29, 'Boston College');
+insert into college (id, name) values (30, 'Harvard University');
+insert into college (id, name) values (31, 'Boston University');
+insert into college (id, name) values (32, 'Harvard University');
+insert into college (id, name) values (33, 'Harvard University');
+insert into college (id, name) values (34, 'Northeastern University');
+insert into college (id, name) values (35, 'Harvard University');
+insert into college (id, name) values (36, 'Massachusetts Institute of Technology');
+insert into college (id, name) values (37, 'Tufts University');
+insert into college (id, name) values (38, 'Tufts University');
+insert into college (id, name) values (39, 'Boston University');
+insert into college (id, name) values (40, 'Tufts University');
+
+-- Department table data
+insert into department (id, college, name) values (1, '36', 'College of Computer Science');
+insert into department (id, college, name) values (2, '30', 'School of Business');
+insert into department (id, college, name) values (3, '9', 'School of Business');
+insert into department (id, college, name) values (4, '40', 'College of Computer Science');
+insert into department (id, college, name) values (5, '11', 'College of Arts and Sciences');
+insert into department (id, college, name) values (6, '12', 'College of Computer Science');
+insert into department (id, college, name) values (7, '10', 'College of Arts and Sciences');
+insert into department (id, college, name) values (8, '34', 'School of Business');
+insert into department (id, college, name) values (9, '16', 'School of Business');
+insert into department (id, college, name) values (10, '19', 'College of Computer Science');
+insert into department (id, college, name) values (11, '33', 'College of Arts and Sciences');
+insert into department (id, college, name) values (12, '4', 'School of Business');
+insert into department (id, college, name) values (13, '2', 'College of Computer Science');
+insert into department (id, college, name) values (14, '28', 'College of Computer Science');
+insert into department (id, college, name) values (15, '14', 'School of Business');
+insert into department (id, college, name) values (16, '35', 'College of Arts and Sciences');
+insert into department (id, college, name) values (17, '39', 'School of Business');
+insert into department (id, college, name) values (18, '1', 'School of Business');
+insert into department (id, college, name) values (19, '23', 'College of Computer Science');
+insert into department (id, college, name) values (20, '15', 'College of Computer Science');
+insert into department (id, college, name) values (21, '13', 'College of Computer Science');
+insert into department (id, college, name) values (22, '6', 'School of Business');
+insert into department (id, college, name) values (23, '20', 'College of Arts and Sciences');
+insert into department (id, college, name) values (24, '26', 'College of Arts and Sciences');
+insert into department (id, college, name) values (25, '8', 'College of Arts and Sciences');
+insert into department (id, college, name) values (26, '17', 'College of Computer Science');
+insert into department (id, college, name) values (27, '31', 'College of Arts and Sciences');
+insert into department (id, college, name) values (28, '22', 'College of Arts and Sciences');
+insert into department (id, college, name) values (29, '24', 'College of Computer Science');
+insert into department (id, college, name) values (30, '29', 'College of Computer Science');
+insert into department (id, college, name) values (31, '32', 'School of Business');
+insert into department (id, college, name) values (32, '27', 'College of Computer Science');
+insert into department (id, college, name) values (33, '5', 'School of Business');
+insert into department (id, college, name) values (34, '37', 'College of Arts and Sciences');
+insert into department (id, college, name) values (35, '7', 'School of Business');
+insert into department (id, college, name) values (36, '25', 'School of Business');
+insert into department (id, college, name) values (37, '18', 'School of Business');
+insert into department (id, college, name) values (38, '21', 'College of Computer Science');
+insert into department (id, college, name) values (39, '38', 'College of Computer Science');
+insert into department (id, college, name) values (40, '3', 'College of Computer Science');
+
+
