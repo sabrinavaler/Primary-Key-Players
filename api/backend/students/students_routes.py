@@ -224,6 +224,43 @@ def add_student():
 
     response = make_response("Successfully added student")
     response.status_code = 200
+    return response
+
+#------------------------------------------------------------
+# Update a student in the database
+@students.route('/students', methods=['PUT'])
+def update_student():
+    # Collecting data from the request object
+    student_data = request.json
+    current_app.logger.info(student_data)
+
+    # Extracting the variables
+    student_id = student_data['id']
+    name = student_data['name']
+    email = student_data['email']
+    gpa = student_data['gpa']
+    major_id = student_data['major_id']
+    grad_year = student_data['grad_year']
+    advised_by = student_data['advised_by']
+
+    # Constructing the query
+    query = f'''
+        UPDATE students
+        SET name = '{name}', email = '{email}', gpa = {gpa}, major_id = {major_id}, grad_year = {grad_year}, advised_by = {advised_by}
+        WHERE id = {student_id}
+    '''
+    current_app.logger.info(query)
+
+    # Executing and committing the update statement
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    response = make_response("Successfully updated student")
+    response.status_code = 200
+    return response
+
+
 
 
 #------------------------------------------------------------
