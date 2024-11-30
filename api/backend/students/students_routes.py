@@ -57,7 +57,7 @@ def get_students():
 # notice that the route takes <id> and then you see id
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
-@students.route('/student/<id>', methods=['GET'])
+@students.route('/students/<id>', methods=['GET'])
 def get_student_detail (id):
 
     query = f'''SELECT id, 
@@ -75,7 +75,7 @@ def get_student_detail (id):
     # The output will appear in the Docker logs output
     # This line has nothing to do with actually executing the query...
     # It is only for debugging purposes.
-    current_app.logger.info(f'GET /student/<id> query={query}')
+    current_app.logger.info(f'GET /students/<id> query={query}')
 
     # get the database connection, execute the query, and
     # fetch the results as a Python Dictionary
@@ -85,7 +85,7 @@ def get_student_detail (id):
     
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect.
-    current_app.logger.info(f'GET /student/<id> Result of query = {theData}')
+    current_app.logger.info(f'GET /students/<id> Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200
@@ -97,7 +97,7 @@ def get_student_detail (id):
 # notice that the route takes <major> and then you see major
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
-@students.route('/student/major/<major>', methods=['GET'])
+@students.route('/students/major/<major>', methods=['GET'])
 def get_students_by_major (major):
 
     query = f'''SELECT id, 
@@ -115,7 +115,7 @@ def get_students_by_major (major):
     # The output will appear in the Docker logs output
     # This line has nothing to do with actually executing the query...
     # It is only for debugging purposes.
-    current_app.logger.info(f'GET /student/major/<major> query={query}')
+    current_app.logger.info(f'GET /students/major/<major> query={query}')
 
     # get the database connection, execute the query, and
     # fetch the results as a Python Dictionary
@@ -125,7 +125,7 @@ def get_students_by_major (major):
     
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect.
-    current_app.logger.info(f'GET /student/major/<major> Result of query = {theData}')
+    current_app.logger.info(f'GET /students/major/<major> Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200
@@ -137,7 +137,7 @@ def get_students_by_major (major):
 # notice that the route takes <id> and then you see id
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
-@students.route('/student/{id}/contact-info', methods=['GET'])
+@students.route('/students/{id}/contact-info', methods=['GET'])
 def get_student_contact (id):
 
     query = f'''SELECT id,
@@ -151,7 +151,7 @@ def get_student_contact (id):
     # The output will appear in the Docker logs output
     # This line has nothing to do with actually executing the query...
     # It is only for debugging purposes.
-    current_app.logger.info(f'GET /student/<id>/contact-info query={query}')
+    current_app.logger.info(f'GET /students/<id>/contact-info query={query}')
 
     # get the database connection, execute the query, and
     # fetch the results as a Python Dictionary
@@ -161,7 +161,7 @@ def get_student_contact (id):
     
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect.
-    current_app.logger.info(f'GET /student/<id>/contact-info Result of query = {theData}')
+    current_app.logger.info(f'GET /students/<id>/contact-info Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200
@@ -194,7 +194,36 @@ def get_students_by_job_position(job_id):
     response.status_code = 200
     return response
 
+#------------------------------------------------------------
+# Add a new student to the database
+@students.route('/students', methods=['POST'])
+def add_student():
+    # Collecting data from the request object
+    student_data = request.json
+    current_app.logger.info(student_data)
 
+    # Extracting the variables
+    name = student_data['name']
+    email = student_data['email']
+    gpa = student_data['gpa']
+    major_id = student_data['major_id']
+    grad_year = student_data['grad_year']
+    advised_by = student_data['advised_by']
+
+    # Constructing the query
+    query = f'''
+        INSERT INTO students (name, email, gpa, major_id, grad_year, advised_by)
+        VALUES ('{name}', '{email}', {gpa}, {major_id}, {grad_year}, {advised_by})
+    '''
+    current_app.logger.info(query)
+
+    # Executing and committing the insert statement
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    response = make_response("Successfully added student")
+    response.status_code = 200
 
 
 #------------------------------------------------------------
