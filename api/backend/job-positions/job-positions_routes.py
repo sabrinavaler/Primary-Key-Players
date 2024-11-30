@@ -15,22 +15,26 @@ from backend.db_connection import db
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-students = Blueprint('students', __name__)
+job_position = Blueprint('job_position', __name__)
 
 #------------------------------------------------------------
 # Get all the students from the database, package them up,
 # and return them to the client
-@students.route('/students', methods=['GET'])
-def get_students():
+@job_position.route('/job_position', methods=['GET'])
+def get_job_position():
     query = '''
         SELECT  id, 
-                name, 
-                email, 
-                gpa, 
-                major_id,
-                grad_year,
-                advised_by 
-        FROM students
+                title, 
+                description, 
+                still_accepting, 
+                num_applicants,
+                postedAt,
+                updatedAt,
+                location,
+                desired_skills,
+                targeted_majors,
+                company_id 
+        FROM job_position
     '''
     
     # get a cursor object from the database
@@ -57,7 +61,7 @@ def get_students():
 # notice that the route takes <id> and then you see id
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
-@students.route('/student/<id>', methods=['GET'])
+@job_position.route('/job_position/<id>', methods=['GET'])
 def get_student_detail (id):
 
     query = f'''SELECT id, 
