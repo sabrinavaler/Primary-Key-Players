@@ -18,16 +18,15 @@ from backend.db_connection import db
 students = Blueprint('reviews', __name__)
 
 #------------------------------------------------------------
-# Get all the reviews from the database, package them up,
-# and return them to the client
+# Get all the reviews from the database
 @students.route('/reviews', methods=['GET'])
-def get_students():
+def get_review():
     query = '''
         SELECT  id, 
                 rating, 
                 review, 
                 student_id, 
-                job_position_id,
+                job_position_id
         FROM reviews
     '''
     
@@ -51,69 +50,57 @@ def get_students():
     return response
 
 # ------------------------------------------------------------
-# Get student information about a specific student
-# notice that the route takes <id> and then you see id
-# as a parameter to the function.  This is one way to send
-# parameterized information into the route handler.
-@students.route('/student/<id>', methods=['GET'])
-def get_student_detail (id):
+# Add a new review to the database
+@students.route('/reviews', methods=['POST'])
+def add_review():
+    # Collecting data from the request object
+    review_data = request.json
+    current_app.logger.info(review_data)
 
-    query = f'''SELECT id, 
-                       name, 
-                       email, 
-                       gpa, 
-                       major_id,
-                       grad_year,
-                       advised_by 
-                FROM students 
-                WHERE id = {str(id)}
+    # Extracting the variables
+    id = review_data['id']
+    rating = review_data['rating']
+    review = review_data['review']
+    student_id = review_data['student_id']
+    job_position_id = review_data['job_position_id']
+
+    # Constructing the query
+    query = f'''
+        INSERT INTO reviews (id, rating, review, student_id, job_position_id)
+        VALUES ('{id}', '{rating}', {review}, {student_id}, {job_position_id})
     '''
-    
-    # logging the query for debugging purposes.
-    # The output will appear in the Docker logs output
-    # This line has nothing to do with actually executing the query...
-    # It is only for debugging purposes.
-    current_app.logger.info(f'GET /student/<id> query={query}')
+    current_app.logger.info(query)
 
-    # get the database connection, execute the query, and
-    # fetch the results as a Python Dictionary
+    # Executing and committing the insert statement
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
-    
-    # Another example of logging for debugging purposes.
-    # You can see if the data you're getting back is what you expect.
-    current_app.logger.info(f'GET /student/<id> Result of query = {theData}')
-    
-    response = make_response(jsonify(theData))
+    db.get_db().commit()
+
+    response = make_response("Successfully added review")
     response.status_code = 200
-    return response
+
 
 
 # ------------------------------------------------------------
-# Get student information about a specific student
-# notice that the route takes <major> and then you see major
-# as a parameter to the function.  This is one way to send
-# parameterized information into the route handler.
-@students.route('/student/major/<major>', methods=['GET'])
-def get_students_by_major (major):
+# Get information about a specific review
+@students.route('/reviews/<id>', methods=['GET'])
+def get_review_detail (id):
 
-    query = f'''SELECT id, 
-                       name, 
-                       email, 
-                       gpa, 
-                       major_id,
-                       grad_year,
-                       advised_by 
-                FROM students 
-                WHERE major_id = {str(major)}
+    query = '''
+        SELECT  id, 
+                rating, 
+                review, 
+                student_id, 
+                job_position_id
+        FROM reviews
+        WHERE id = {str(id)}
     '''
     
     # logging the query for debugging purposes.
     # The output will appear in the Docker logs output
     # This line has nothing to do with actually executing the query...
     # It is only for debugging purposes.
-    current_app.logger.info(f'GET /student/major/<major> query={query}')
+    current_app.logger.info(f'GET /reviews/<id> query={query}')
 
     # get the database connection, execute the query, and
     # fetch the results as a Python Dictionary
@@ -123,11 +110,12 @@ def get_students_by_major (major):
     
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect.
-    current_app.logger.info(f'GET /student/major/<major> Result of query = {theData}')
+    current_app.logger.info(f'GET /reviews/<id> Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
+
 
 
 # ------------------------------------------------------------
