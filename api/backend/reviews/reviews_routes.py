@@ -179,6 +179,8 @@ def delete_review():
     response.status_code = 200
     return response
 
+
+
 #------------------------------------------------------------
 # Retrieve a list of reviews for positions at a specific company
 @reviews.route('/reviews/company/<id>', methods=['GET'])
@@ -211,38 +213,28 @@ def get_reviews_by_company(company_id):
 
 
 # ------------------------------------------------------------
-# get product information about a specific product
-# notice that the route takes <id> and then you see id
-# as a parameter to the function.  This is one way to send 
-# parameterized information into the route handler.
-@students.route('/product/<id>', methods=['GET'])
-def get_product_detail (id):
+# Retrieve a list of reviews made by a specific student
+@reviews.route('/reviews/student/<id>', methods=['GET'])
+def get_reviews_by_student(student_id):
 
-    query = f'''SELECT id, 
-                       product_name, 
-                       description, 
-                       list_price, 
-                       category 
-                FROM products 
-                WHERE id = {str(id)}
+    query = '''
+        SELECT r.id, r.rating, r.review, r.student_id, r.job_position_id
+        FROM review
+        WHERE student_id = {str(student_id)}
     '''
-    
-    # logging the query for debugging purposes.  
-    # The output will appear in the Docker logs output
-    # This line has nothing to do with actually executing the query...
-    # It is only for debugging purposes. 
-    current_app.logger.info(f'GET /product/<id> query={query}')
+    #Log query
+    current_app.logger.info(f'GET /reviews/student/<id> query={query}')
 
-    # get the database connection, execute the query, and 
-    # fetch the results as a Python Dictionary
+    # Get a cursor object from the database
     cursor = db.get_db().cursor()
+
+    # Execute the query
     cursor.execute(query)
+
+    # Fetch all matching records
     theData = cursor.fetchall()
-    
-    # Another example of logging for debugging purposes.
-    # You can see if the data you're getting back is what you expect. 
-    current_app.logger.info(f'GET /product/<id> Result of query = {theData}')
-    
+
+    # Create an HTTP response with the data
     response = make_response(jsonify(theData))
     response.status_code = 200
     return response
