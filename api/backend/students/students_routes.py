@@ -52,6 +52,125 @@ def get_students():
     # send the response back to the client
     return response
 
+# ------------------------------------------------------------
+# Get student information about a specific student
+# notice that the route takes <id> and then you see id
+# as a parameter to the function.  This is one way to send
+# parameterized information into the route handler.
+@students.route('/student/<id>', methods=['GET'])
+def get_student_detail (id):
+
+    query = f'''SELECT id, 
+                       name, 
+                       email, 
+                       gpa, 
+                       major_id,
+                       grad_year,
+                       advised_by 
+                FROM students 
+                WHERE id = {str(id)}
+    '''
+    
+    # logging the query for debugging purposes.
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes.
+    current_app.logger.info(f'GET /student/<id> query={query}')
+
+    # get the database connection, execute the query, and
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect.
+    current_app.logger.info(f'GET /student/<id> Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+
+
+# ------------------------------------------------------------
+# Get student information about a specific student
+# notice that the route takes <major> and then you see major
+# as a parameter to the function.  This is one way to send
+# parameterized information into the route handler.
+@students.route('/student/major/<major>', methods=['GET'])
+def get_students_by_major (major):
+
+    query = f'''SELECT id, 
+                       name, 
+                       email, 
+                       gpa, 
+                       major_id,
+                       grad_year,
+                       advised_by 
+                FROM students 
+                WHERE major_id = {str(major)}
+    '''
+    
+    # logging the query for debugging purposes.
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes.
+    current_app.logger.info(f'GET /student/major/<major> query={query}')
+
+    # get the database connection, execute the query, and
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect.
+    current_app.logger.info(f'GET /student/major/<major> Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+
+
+# ------------------------------------------------------------
+# Get contact information about a specific student
+# notice that the route takes <id> and then you see id
+# as a parameter to the function.  This is one way to send
+# parameterized information into the route handler.
+@students.route('/student/{id}/contact-info', methods=['GET'])
+def get_student_contact (major):
+
+    query = f'''SELECT id, 
+                       name, 
+                       email, 
+                       gpa, 
+                       major_id,
+                       grad_year,
+                       advised_by 
+                FROM students 
+                WHERE major_id = {str(major)}
+    '''
+    
+    # logging the query for debugging purposes.
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes.
+    current_app.logger.info(f'GET /student/major/<major> query={query}')
+
+    # get the database connection, execute the query, and
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
+    
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect.
+    current_app.logger.info(f'GET /student/major/<major> Result of query = {theData}')
+    
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+
+
+
+
 #------------------------------------------------------------
 # Get all the products from the database, package them up,
 # and return them to the client
