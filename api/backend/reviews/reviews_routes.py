@@ -119,41 +119,39 @@ def get_review_detail (id):
 
 
 # ------------------------------------------------------------
-# Get contact information about a specific student
-# notice that the route takes <id> and then you see id
-# as a parameter to the function.  This is one way to send
-# parameterized information into the route handler.
-@students.route('/student/{id}/contact-info', methods=['GET'])
-def get_student_contact (id):
+# Update a review in the database
+@students.route('/reviews/<id>', methods=['PUT'])
+def update_review():
+    # Collecting data from the request object
+    review_data = request.json
+    current_app.logger.info(review_data)
 
-    query = f'''SELECT id,
-                       name, 
-                       email, 
-                FROM students 
-                WHERE id = {str(id)}
+    # Extracting the variables
+    id = review_data['id']
+    rating = review_data['rating']
+    review = review_data['review']
+    student_id = review_data['student_id']
+    job_position_id = review_data['job_position_id']
+
+    # Constructing the query
+    query = f'''
+        UPDATE students
+        SET id = '{id}', rating = '{rating}', review = {review}, student_id = {student_id}, job_position_id = {job_position_id}
+        WHERE id = {id}
     '''
-    
-    # logging the query for debugging purposes.
-    # The output will appear in the Docker logs output
-    # This line has nothing to do with actually executing the query...
-    # It is only for debugging purposes.
-    current_app.logger.info(f'GET /student/<id>/contact-info query={query}')
+    current_app.logger.info(query)
 
-    # get the database connection, execute the query, and
-    # fetch the results as a Python Dictionary
+    # Executing and committing the update statement
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    theData = cursor.fetchall()
-    
-    # Another example of logging for debugging purposes.
-    # You can see if the data you're getting back is what you expect.
-    current_app.logger.info(f'GET /student/<id>/contact-info Result of query = {theData}')
-    
-    response = make_response(jsonify(theData))
+    db.get_db().commit()
+
+    response = make_response("Successfully updated review")
     response.status_code = 200
     return response
 
 
+#----
 # ------------------------------------------------------------
 # Retrieve a list of students who previously had the specified job position
 @students.route('/students/job-position/<job_id>', methods=['GET'])
