@@ -27,7 +27,7 @@ def get_review():
                 review, 
                 student_id, 
                 job_position_id
-        FROM reviews
+        FROM review
     '''
     
     # get a cursor object from the database
@@ -66,7 +66,7 @@ def add_review():
 
     # Constructing the query
     query = f'''
-        INSERT INTO reviews (id, rating, review, student_id, job_position_id)
+        INSERT INTO review (id, rating, review, student_id, job_position_id)
         VALUES ('{id}', '{rating}', {review}, {student_id}, {job_position_id})
     '''
     current_app.logger.info(query)
@@ -92,7 +92,7 @@ def get_review_detail (id):
                 review, 
                 student_id, 
                 job_position_id
-        FROM reviews
+        FROM review
         WHERE id = {str(id)}
     '''
     
@@ -135,7 +135,7 @@ def update_review():
 
     # Constructing the query
     query = f'''
-        UPDATE reviews
+        UPDATE review
         SET id = '{id}', rating = '{rating}', review = {review}, student_id = {student_id}, job_position_id = {job_position_id}
         WHERE id = {id}
     '''
@@ -165,7 +165,7 @@ def delete_review():
 
     # Constructing the query
     query = f'''
-        DELETE FROM reviews
+        DELETE FROM review
         WHERE id = {review_id}
     '''
     current_app.logger.info(query)
@@ -180,37 +180,35 @@ def delete_review():
     return response
 
 #------------------------------------------------------------
-# Get all the products from the database, package them up,
-# and return them to the client
-@students.route('/products', methods=['GET'])
-def get_products():
+# Retrieve a list of reviews for positions at a specific company
+@reviews.route('/reviews/company/<id>', methods=['GET'])
+def get_reviews_by_company(company_id):
+
     query = '''
-        SELECT  id, 
-                product_code, 
-                product_name, 
-                list_price, 
-                category 
-        FROM products
+        SELECT r.id, r.rating, r.review, r.student_id, r.job_position_id
+        FROM review r
+        JOIN job_position jp ON r.job_position_id = jp.id
+        JOIN company c ON jp.company_id = c.id
+        WHERE c.id = {str(company_id)}
     '''
-    
-    # get a cursor object from the database
+    #Log query
+    current_app.logger.info(f'GET /reviews/company/<id> query={query}')
+
+    # Get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    # use cursor to query the database for a list of products
+    # Execute the query
     cursor.execute(query)
 
-    # fetch all the data from the cursor
-    # The cursor will return the data as a 
-    # Python Dictionary
+    # Fetch all matching records
     theData = cursor.fetchall()
 
-    # Create a HTTP Response object and add results of the query to it
-    # after "jasonify"-ing it.
+    # Create an HTTP response with the data
     response = make_response(jsonify(theData))
-    # set the proper HTTP Status code of 200 (meaning all good)
     response.status_code = 200
-    # send the response back to the client
     return response
+
+
 
 # ------------------------------------------------------------
 # get product information about a specific product
