@@ -740,3 +740,5 @@ ORDER BY
 DELETE FROM coop_connect.student
 WHERE
     student.id = 4;
+
+-- insert mockaroo data here
