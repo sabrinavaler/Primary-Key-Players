@@ -19,7 +19,8 @@ students = Blueprint('students', __name__)
 
 #------------------------------------------------------------
 # Get all the students from the database, package them up,
-# and return them to the client
+# and return them to the client.
+# Tested and works :)
 @students.route('/students', methods=['GET'])
 def get_students():
     query = '''
@@ -57,6 +58,7 @@ def get_students():
 # notice that the route takes <id> and then you see id
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
+# Tested and works :)
 @students.route('/students/<id>', methods=['GET'])
 def get_student_detail (id):
 
@@ -97,6 +99,7 @@ def get_student_detail (id):
 # notice that the route takes <major> and then you see major
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
+# Tested and works :)
 @students.route('/students/major/<major>', methods=['GET'])
 def get_students_by_major (major):
 
@@ -137,12 +140,13 @@ def get_students_by_major (major):
 # notice that the route takes <id> and then you see id
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
-@students.route('/students/{id}/contact-info', methods=['GET'])
+# Tested and works :)
+@students.route('/students/<id>/contact-info', methods=['GET'])
 def get_student_contact (id):
 
     query = f'''SELECT id,
                        name, 
-                       email, 
+                       email 
                 FROM student 
                 WHERE id = {str(id)}
     '''
