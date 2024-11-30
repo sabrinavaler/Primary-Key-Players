@@ -15,22 +15,20 @@ from backend.db_connection import db
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-students = Blueprint('students', __name__)
+students = Blueprint('reviews', __name__)
 
 #------------------------------------------------------------
-# Get all the students from the database, package them up,
+# Get all the reviews from the database, package them up,
 # and return them to the client
-@students.route('/students', methods=['GET'])
+@students.route('/reviews', methods=['GET'])
 def get_students():
     query = '''
         SELECT  id, 
-                name, 
-                email, 
-                gpa, 
-                major_id,
-                grad_year,
-                advised_by 
-        FROM students
+                rating, 
+                review, 
+                student_id, 
+                job_position_id,
+        FROM reviews
     '''
     
     # get a cursor object from the database
