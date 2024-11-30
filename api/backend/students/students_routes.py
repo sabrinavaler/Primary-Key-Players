@@ -174,6 +174,7 @@ def get_student_contact (id):
 
 # ------------------------------------------------------------
 # Retrieve a list of students who previously had the specified job position
+# Tested and works :)
 @students.route('/students/job-position/<job_id>', methods=['GET'])
 def get_students_by_job_position(job_id):
 
