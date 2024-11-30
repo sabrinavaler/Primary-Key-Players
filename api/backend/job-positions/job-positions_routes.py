@@ -18,7 +18,7 @@ from backend.db_connection import db
 job_position = Blueprint('job_position', __name__)
 
 #------------------------------------------------------------
-# Get all the students from the database, package them up,
+# Get all job positions from the database, package them up,
 # and return them to the client
 @job_position.route('/job_position', methods=['GET'])
 def get_job_position():
@@ -40,7 +40,7 @@ def get_job_position():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    # use cursor to query the database for a list of students
+    # use cursor to query the database for a list of jobs
     cursor.execute(query)
 
     # fetch all the data from the cursor
@@ -57,21 +57,24 @@ def get_job_position():
     return response
 
 # ------------------------------------------------------------
-# Get student information about a specific student
+# Get job position information about a specific job
 # notice that the route takes <id> and then you see id
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
 @job_position.route('/job_position/<id>', methods=['GET'])
-def get_student_detail (id):
+def get_specific_job (id):
 
     query = f'''SELECT id, 
-                       name, 
-                       email, 
-                       gpa, 
-                       major_id,
-                       grad_year,
-                       advised_by 
-                FROM students 
+                       title, 
+                       description, 
+                       still_accepting, 
+                       num_applicants,
+                       postedAt,
+                       updatedAt,
+                       desired_skills,
+                       targeted_majors,
+                       company_id 
+                FROM job_position 
                 WHERE id = {str(id)}
     '''
     
@@ -79,7 +82,7 @@ def get_student_detail (id):
     # The output will appear in the Docker logs output
     # This line has nothing to do with actually executing the query...
     # It is only for debugging purposes.
-    current_app.logger.info(f'GET /student/<id> query={query}')
+    current_app.logger.info(f'GET /job_position/<id> query={query}')
 
     # get the database connection, execute the query, and
     # fetch the results as a Python Dictionary
@@ -89,7 +92,7 @@ def get_student_detail (id):
     
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect.
-    current_app.logger.info(f'GET /student/<id> Result of query = {theData}')
+    current_app.logger.info(f'GET /job_position/<id> Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200
