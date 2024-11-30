@@ -15,11 +15,11 @@ from backend.db_connection import db
 #------------------------------------------------------------
 # Create a new Blueprint object, which is a collection of 
 # routes.
-students = Blueprint('reviews', __name__)
+reviews = Blueprint('reviews', __name__)
 
 #------------------------------------------------------------
 # Get all the reviews from the database
-@students.route('/reviews', methods=['GET'])
+@reviews.route('/reviews', methods=['GET'])
 def get_review():
     query = '''
         SELECT  id, 
@@ -33,7 +33,7 @@ def get_review():
     # get a cursor object from the database
     cursor = db.get_db().cursor()
 
-    # use cursor to query the database for a list of students
+    # use cursor to query the database for a list of reviews
     cursor.execute(query)
 
     # fetch all the data from the cursor
@@ -51,7 +51,7 @@ def get_review():
 
 # ------------------------------------------------------------
 # Add a new review to the database
-@students.route('/reviews', methods=['POST'])
+@reviews.route('/reviews', methods=['POST'])
 def add_review():
     # Collecting data from the request object
     review_data = request.json
@@ -83,7 +83,7 @@ def add_review():
 
 # ------------------------------------------------------------
 # Get information about a specific review
-@students.route('/reviews/<id>', methods=['GET'])
+@reviews.route('/reviews/<id>', methods=['GET'])
 def get_review_detail (id):
 
     query = '''
@@ -120,7 +120,7 @@ def get_review_detail (id):
 
 # ------------------------------------------------------------
 # Update a review in the database
-@students.route('/reviews/<id>', methods=['PUT'])
+@reviews.route('/reviews/<id>', methods=['PUT'])
 def update_review():
     # Collecting data from the request object
     review_data = request.json
@@ -135,7 +135,7 @@ def update_review():
 
     # Constructing the query
     query = f'''
-        UPDATE students
+        UPDATE reviews
         SET id = '{id}', rating = '{rating}', review = {review}, student_id = {student_id}, job_position_id = {job_position_id}
         WHERE id = {id}
     '''
@@ -151,35 +151,33 @@ def update_review():
     return response
 
 
-#----
+
 # ------------------------------------------------------------
-# Retrieve a list of students who previously had the specified job position
-@students.route('/students/job-position/<job_id>', methods=['GET'])
-def get_students_by_job_position(job_id):
+# Delete a review from the database
+@reviews.route('/reviews/<id>', methods=['DELETE'])
+def delete_review():
+    # Collecting data from the request object
+    review_data = request.json
+    current_app.logger.info(review_data)
 
+    # Extracting the variables
+    review_id = review_data['id']
+
+    # Constructing the query
     query = f'''
-        SELECT s.id, s.name, s.email, s.gpa, s.grad_year, s.major_id
-        FROM student s
-        JOIN student_past_job spj ON s.id = spj.student_id
-        WHERE spj.job_position_id = {str(job_id)}
+        DELETE FROM reviews
+        WHERE id = {review_id}
     '''
+    current_app.logger.info(query)
 
-    # Get a cursor object from the database
+    # Executing and committing the delete statement
     cursor = db.get_db().cursor()
-
-    # Execute the query
     cursor.execute(query)
+    db.get_db().commit()
 
-    # Fetch all matching records
-    students_data = cursor.fetchall()
-
-    # Create an HTTP response with the data
-    response = make_response(jsonify(students_data))
+    response = make_response("Successfully deleted review")
     response.status_code = 200
     return response
-
-
-
 
 #------------------------------------------------------------
 # Get all the products from the database, package them up,
