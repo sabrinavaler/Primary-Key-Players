@@ -55,7 +55,7 @@ if st.button("Act as John, a Political Strategy Advisor",
     # finally, we ask streamlit to switch to another page, in this case, the 
     # landing page for this particular user type
     logger.info("Logging in as Political Strategy Advisor Persona")
-    st.switch_page('pages/00_Pol_Strat_Home.py')
+    st.switch_page('pages/12_API_Test.py')
 
 if st.button('Act as Mohammad, an USAID worker', 
             type = 'primary', 

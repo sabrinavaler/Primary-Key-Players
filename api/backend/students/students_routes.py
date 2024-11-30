@@ -30,7 +30,7 @@ def get_students():
                 major_id,
                 grad_year,
                 advised_by 
-        FROM students
+        FROM student
     '''
     
     # get a cursor object from the database
@@ -67,7 +67,7 @@ def get_student_detail (id):
                        major_id,
                        grad_year,
                        advised_by 
-                FROM students 
+                FROM student 
                 WHERE id = {str(id)}
     '''
     
@@ -107,7 +107,7 @@ def get_students_by_major (major):
                        major_id,
                        grad_year,
                        advised_by 
-                FROM students 
+                FROM student 
                 WHERE major_id = {str(major)}
     '''
     
@@ -143,7 +143,7 @@ def get_student_contact (id):
     query = f'''SELECT id,
                        name, 
                        email, 
-                FROM students 
+                FROM student 
                 WHERE id = {str(id)}
     '''
     
@@ -212,7 +212,7 @@ def add_student():
 
     # Constructing the query
     query = f'''
-        INSERT INTO students (name, email, gpa, major_id, grad_year, advised_by)
+        INSERT INTO student (name, email, gpa, major_id, grad_year, advised_by)
         VALUES ('{name}', '{email}', {gpa}, {major_id}, {grad_year}, {advised_by})
     '''
     current_app.logger.info(query)
@@ -245,7 +245,7 @@ def update_student():
 
     # Constructing the query
     query = f'''
-        UPDATE students
+        UPDATE student
         SET name = '{name}', email = '{email}', gpa = {gpa}, major_id = {major_id}, grad_year = {grad_year}, advised_by = {advised_by}
         WHERE id = {student_id}
     '''
@@ -274,7 +274,7 @@ def delete_student():
 
     # Constructing the query
     query = f'''
-        DELETE FROM students
+        DELETE FROM student
         WHERE id = {student_id}
     '''
     current_app.logger.info(query)
