@@ -101,44 +101,47 @@ def get_specific_job (id):
     return response
 
 
-# # ------------------------------------------------------------
-# # Get student information about a specific student
-# # notice that the route takes <major> and then you see major
-# # as a parameter to the function.  This is one way to send
-# # parameterized information into the route handler.
-# @students.route('/student/major/<major>', methods=['GET'])
-# def get_students_by_major (major):
+# ------------------------------------------------------------
+# Get student information about a specific student
+# notice that the route takes <major> and then you see major
+# as a parameter to the function.  This is one way to send
+# parameterized information into the route handler.
+@job_position.route('/job_position/targeted_majors', methods=['GET'])
+def get_jobs_by_major (major):
 
-#     query = f'''SELECT id, 
-#                        name, 
-#                        email, 
-#                        gpa, 
-#                        major_id,
-#                        grad_year,
-#                        advised_by 
-#                 FROM students 
-#                 WHERE major_id = {str(major)}
-#     '''
+    query = f'''SELECT id, 
+                       title, 
+                       description, 
+                       still_accepting, 
+                       num_applicants,
+                       postedAt,
+                       updatedAt,
+                       desired_skills,
+                       targeted_majors,
+                       company_id 
+                FROM job_position 
+                WHERE targeted_majors = {str(major)}
+    '''
     
-#     # logging the query for debugging purposes.
-#     # The output will appear in the Docker logs output
-#     # This line has nothing to do with actually executing the query...
-#     # It is only for debugging purposes.
-#     current_app.logger.info(f'GET /student/major/<major> query={query}')
+    # logging the query for debugging purposes.
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes.
+    current_app.logger.info(f'GET /job_position/targeted_majors query={query}')
 
-#     # get the database connection, execute the query, and
-#     # fetch the results as a Python Dictionary
-#     cursor = db.get_db().cursor()
-#     cursor.execute(query)
-#     theData = cursor.fetchall()
+    # get the database connection, execute the query, and
+    # fetch the results as a Python Dictionary
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    theData = cursor.fetchall()
     
-#     # Another example of logging for debugging purposes.
-#     # You can see if the data you're getting back is what you expect.
-#     current_app.logger.info(f'GET /student/major/<major> Result of query = {theData}')
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect.
+    current_app.logger.info(f'GET /job_position/targeted_majors Result of query = {theData}')
     
-#     response = make_response(jsonify(theData))
-#     response.status_code = 200
-#     return response
+    response = make_response(jsonify(theData))
+    response.status_code = 200
+    return response
 
 
 # # ------------------------------------------------------------
