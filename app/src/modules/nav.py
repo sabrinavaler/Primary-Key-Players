@@ -7,8 +7,10 @@ import streamlit as st
 
 #### ------------------------ General ------------------------
 def HomeNav():
-    st.sidebar.page_link("Home.py", label="Home", icon="🏠")
+    st.sidebar.page_link("Opening_Screen.py", label="Home", icon="🏠")
 
+def UserSelection():
+    st.sidebar.page_link("pages/User_Selection_Page.py", label="User Selection", icon="👤")
 
 def AboutPageNav():
     st.sidebar.page_link("pages/About_Page.py", label="About", icon="🧠")
@@ -68,7 +70,7 @@ def SideBarLinks(show_home=False):
     # If there is no logged in user, redirect to the Home (Landing) page
     if "authenticated" not in st.session_state:
         st.session_state.authenticated = False
-        st.switch_page("Home.py")
+        st.switch_page("Opening_Screen.py")
 
     if show_home:
         # Show the Home page link (the landing page)
@@ -101,4 +103,4 @@ def SideBarLinks(show_home=False):
         if st.sidebar.button("Logout"):
             del st.session_state["role"]
             del st.session_state["authenticated"]
-            st.switch_page("Home.py")
+            st.switch_page("pages/User_Selection_Page.py")

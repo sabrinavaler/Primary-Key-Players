@@ -26,4 +26,4 @@ ENV STREAMLIT_SERVER_RUN_ON_SAVE true
 
 # ENTRYPOINT ["streamlit", "run", "src/Home.py", "--server.port=8501", "--server.address=0.0.0.0"] 
 
-CMD ["streamlit", "run", "Home.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "Opening_Screen.py", "--server.port=8501", "--server.address=0.0.0.0"]
