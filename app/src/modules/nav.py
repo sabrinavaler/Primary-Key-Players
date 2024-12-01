@@ -16,6 +16,27 @@ def AboutPageNav():
     st.sidebar.page_link("pages/About_Page.py", label="About", icon="🧠")
 
 
+# ------------------------ Maura Tabs ------------------------
+def ViewJobs():
+    st.sidebar.page_link("pages/View_Jobs.py", label="View Jobs", icon="👀")
+
+# todo
+
+# def SeePredecessors():
+#     st.sidebar.page_link("pages/See_Predecessors.py", label="See Predecessors", icon="📖")
+
+# def ResearchInterviewQuestions():
+#     st.sidebar.page_link("pages/Research_Interview_Questions.py", label="Study Interview Questions", icon="🔍")
+
+# def SeeReviews():
+#     st.sidebar.page_link("pages/See_Reviews.py", label="See Reviews", icon="📝")
+
+# def ApplicationStatuses():
+#     st.sidebar.page_link("pages/Application_Statuses.py", label="Application Statuses", icon="📊")
+
+# def SubmitApplication():
+#     st.sidebar.page_link("pages/Submit_Application.py", label="Submit Application", icon="📤")
+
 #### ------------------------ Examples for Role of pol_strat_advisor ------------------------
 def PolStratAdvHomeNav():
     st.sidebar.page_link(
@@ -79,11 +100,14 @@ def SideBarLinks(show_home=False):
     # Show the other page navigators depending on the users' role.
     if st.session_state["authenticated"]:
 
-        # Show World Bank Link and Map Demo Link if the user is a political strategy advisor role.
-        if st.session_state["role"] == "pol_strat_advisor":
-            PolStratAdvHomeNav()
-            WorldBankVizNav()
-            MapDemoNav()
+        # Pages available to Maura Turner
+        if st.session_state["role"] == "sophomore":
+            ViewJobs()
+            # SeePredecessors()
+            # ResearchInterviewQuestions()
+            # SeeReviews()
+            # ApplicationStatuses()
+            # SubmitApplication()
 
         # If the user role is usaid worker, show the Api Testing page
         if st.session_state["role"] == "usaid_worker":
