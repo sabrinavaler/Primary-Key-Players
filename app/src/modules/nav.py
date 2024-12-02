@@ -22,11 +22,11 @@ def ViewJobs():
 
 # todo
 
-# def SeePredecessors():
-#     st.sidebar.page_link("pages/See_Predecessors.py", label="See Predecessors", icon="📖")
+def SeePredecessors():
+    st.sidebar.page_link("pages/See_Predecessors.py", label="See Predecessors", icon="📖")
 
-# def ResearchInterviewQuestions():
-#     st.sidebar.page_link("pages/Research_Interview_Questions.py", label="Study Interview Questions", icon="🔍")
+def ResearchInterviewQuestions():
+    st.sidebar.page_link("pages/Research_Interview_Questions.py", label="Study Interview Questions", icon="🔍")
 
 # def SeeReviews():
 #     st.sidebar.page_link("pages/See_Reviews.py", label="See Reviews", icon="📝")
@@ -103,8 +103,8 @@ def SideBarLinks(show_home=False):
         # Pages available to Maura Turner
         if st.session_state["role"] == "sophomore":
             ViewJobs()
-            # SeePredecessors()
-            # ResearchInterviewQuestions()
+            SeePredecessors()
+            ResearchInterviewQuestions()
             # SeeReviews()
             # ApplicationStatuses()
             # SubmitApplication()

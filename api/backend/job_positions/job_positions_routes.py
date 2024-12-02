@@ -57,7 +57,6 @@ def get_job_position():
     return response
 
 
-
 # ------------------------------------------------------------
 # Get job position information about a specific job
 # notice that the route takes <id> and then you see id
