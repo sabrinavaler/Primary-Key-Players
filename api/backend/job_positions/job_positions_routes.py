@@ -268,7 +268,7 @@ def add_job_position():
     return response
 
 #------------------------------------------------------------
-# Update a student in the database
+# Update a job position in the database
 @job_position.route('/job-position', methods=['PUT'])
 def update_job_position():
     # Collecting data from the request object
@@ -306,29 +306,35 @@ def update_job_position():
     response.status_code = 200
     return response
     
-# # ------------------------------------------------------------
-# # Get the top 5 most expensive products from the database
-# @students.route('/mostExpensive')
-# def get_most_pop_products():
+#------------------------------------------------------------
+# Delete a specific job position
+@job_position.route('/job-position', methods=['DELETE'])
+def delete_job_position():
+    # Collecting data from the request object
+    job_position_data = request.json
+    current_app.logger.info(job_position_data)
 
-#     query = '''
-#         SELECT product_code, 
-#                product_name, 
-#                list_price, 
-#                reorder_level
-#         FROM products
-#         ORDER BY list_price DESC
-#         LIMIT 5
-#     '''
-    
-#     # Same process as handler above
-#     cursor = db.get_db().cursor()
-#     cursor.execute(query)
-#     theData = cursor.fetchall()
- 
-#     response = make_response(jsonify(theData))
-#     response.status_code = 200
-#     return response
+    # Extracting the variables
+    job_id = job_position_data['id']
+
+    # Constructing the query
+    query = f'''
+        DELETE FROM job_position
+        WHERE id = {job_id}
+    '''
+    current_app.logger.info(query)
+
+    # Executing and committing the delete statement
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    db.get_db().commit()
+
+    response = make_response("Successfully deleted job position")
+    response.status_code = 200
+    return response
+
+
+#------------------------------------------------------------
 
 # # ------------------------------------------------------------
 # # Route to get the 10 most expensive items from the 
