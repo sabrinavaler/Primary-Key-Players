@@ -106,7 +106,7 @@ def get_specific_job (id):
 # notice that the route accesses targeted_maors and then you see major
 # as a parameter to the function.  This is one way to send
 # parameterized information into the route handler.
-@job_position.route('/job_position/targeted_majors/<major_id>', methods=['GET'])
+@job_position.route('/job-position/targeted-majors/<major_id>', methods=['GET'])
 def get_jobs_by_major (major_id):
 
     query = f'''SELECT id, 
@@ -127,7 +127,7 @@ def get_jobs_by_major (major_id):
     # The output will appear in the Docker logs output
     # This line has nothing to do with actually executing the query...
     # It is only for debugging purposes.
-    current_app.logger.info(f'GET /job_position/targeted_majors/<major_id> query={query}')
+    current_app.logger.info(f'GET /job-position/targeted-majors/<major_id> query={query}')
 
     # get the database connection, execute the query, and
     # fetch the results as a Python Dictionary
@@ -137,7 +137,7 @@ def get_jobs_by_major (major_id):
     
     # Another example of logging for debugging purposes.
     # You can see if the data you're getting back is what you expect.
-    current_app.logger.info(f'GET /job_position/targeted_majors/<major_id> Result of query = {theData}')
+    current_app.logger.info(f'GET /job-position/targeted-majors/<major_id> Result of query = {theData}')
     
     response = make_response(jsonify(theData))
     response.status_code = 200
@@ -187,16 +187,29 @@ def get_similar_jobs ():
 
 
 # ------------------------------------------------------------
-# Retrieve a list of students who previously had the specified job position
-@job_position.route('/job_position/student/<job_id>', methods=['GET'])
-def get_students_by_job_position(job_id):
+# Retrieve a list of previous jobs from a specific student
+@job_position.route('/job-position/student/<id>', methods=['GET'])
+def get_student_past_jobs(id):
 
-    query = f'''
-        SELECT s.id, s.name, s.email, s.gpa, s.grad_year, s.major_id
-        FROM student s
-        JOIN student_past_job spj ON s.id = spj.student_id
-        WHERE spj.job_position_id = {str(job_id)}
+    query = f'''SELECT  j.id, 
+                        j.title, 
+                        j.description, 
+                        j.still_accepting, 
+                        j.num_applicants,
+                        j.postedAt,
+                        j.updatedAt,
+                        j.desired_skills,
+                        j.targeted_majors,
+                        j.company_id
+                FROM job_position j JOIN student_past_job spj ON j.id = spj.job_position_id
+                WHERE spj.student_id = {str(id)}
     '''
+
+    # logging the query for debugging purposes.
+    # The output will appear in the Docker logs output
+    # This line has nothing to do with actually executing the query...
+    # It is only for debugging purposes.
+    current_app.logger.info(f'GET /job-position/student/<id> query={query}')
 
     # Get a cursor object from the database
     cursor = db.get_db().cursor()
@@ -206,6 +219,10 @@ def get_students_by_job_position(job_id):
 
     # Fetch all matching records
     students_data = cursor.fetchall()
+
+    # Another example of logging for debugging purposes.
+    # You can see if the data you're getting back is what you expect.
+    current_app.logger.info(f'GET /job-position/student/<id> Result of query = {theData}')
 
     # Create an HTTP response with the data
     response = make_response(jsonify(students_data))
